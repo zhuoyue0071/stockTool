@@ -1,6 +1,6 @@
 <template lang="">
   <div>
-    <h1>sadas</h1>
+    <h1>上传文件</h1>
   </div>
 </template>
 <script>

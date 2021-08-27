@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+  </head>
+  <body>
+    <div id="main" style="width: 600px; height: 400px"></div>
+    <div style="width:600px; margin: 0 auto">
+      <div class="operationBox">
+        <div>请输入<b>成本</b>价格：<input class="costPrice" type="text"/ ></div>
+        <div style="margin-top: 20px">请输入<b>当前</b>价格：<input class="curPrice" type="text"/ ></div>
+        <div style="margin-top: 20px">
+          请输入<b>止损比率</b>：<input class="minProfitRatio" type="text"/ >
+        </div>
+        <button class="singlePriceCalc" style="margin: 20px" type="button">计算止损价格</button>
+        <div>
+          <button class="realTimePriceCalc" style="margin: 20px" type="time">计算变化止损价格</button>
+          <button class="stopBtn" style="margin: 20px" type="button">停止</button>
+        </div>
+      </div>
+      <div class="checkOutBox" style="font-size: 24px"></div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    let cost = 16.64;
+    let availableDiff = 0.3;
+    let currentPrice = 17.89;
+    let myProfit;
+
+    const oDiv = document.querySelector(".checkOutBox");
+    const oBtn = document.querySelector(".singlePriceCalc");
+    oBtn.addEventListener('click',function(){
+      currentPrice = document.querySelector(".curPrice").value;
+      availableDiff = document.querySelector(".minProfitRatio").value;
+      cost = document.querySelector(".costPrice").value;
+      oDiv.innerHTML = sellPrice(cost, availableDiff, currentPrice);
+    },false)
+    
+    function sellPrice(cost, availableDiff = 0.3, currentPrice) {
+      let tempProfit = currentPrice - cost;
+      let minFloatProfit = tempProfit * (1 - availableDiff);
+      let sellOutPrice = currentPrice - tempProfit * availableDiff;
+      return `<p> 现在的利差为：<span style="color:red;">￥${tempProfit}</span>， </p>
+      <p>现在的股价为：<span style="color:red;">￥${currentPrice}</span>， </p>
+      <p>可接受最小的回撤利差为：<span style="color:red;">￥${minFloatProfit}</span>， </p>
+      <p>清仓卖出价格为：<span style="color:red;">￥${sellOutPrice}</span>， </p>
+      `;
+    }
+
+    function priceChange(currentPrice, timeSlot) {
+      let timer = null
+      setInterval(() => {
+        
+      }, 1000);
+    }
+
+
+    var chartDom = document.getElementById("main");
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+      title: {
+        text: "某站点用户访问来源",
+        subtext: "纯属虚构",
+        left: "center",
+      },
+      tooltip: {
+        trigger: "item",
+      },
+      legend: {
+        orient: "vertical",
+        left: "left",
+      },
+      series: [
+        {
+          name: "访问来源",
+          type: "pie",
+          radius: "50%",
+          data: [
+            { value: 1048, name: "搜索引擎" },
+            { value: 735, name: "直接访问" },
+            { value: 580, name: "邮件营销" },
+            { value: 484, name: "联盟广告" },
+            { value: 300, name: "视频广告" },
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: "rgba(0, 0, 0, 0.5)",
+            },
+          },
+        },
+      ],
+    };
+
+    option && myChart.setOption(option);
+  </script>
+
+  <style>
+    b{
+      color:dodgerblue;
+    }
+  </style>
+</html>
