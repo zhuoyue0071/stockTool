@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <style>
+            #graph {
+                /*            border: 1px solid black;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;*/
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="bg" width="64" height="64"></canvas>
+    </body>
+</html>
+<script type="text/javascript">
+    var bg = document.getElementById('bg');
+    var cxt = bg.getContext('2d'); //创建context对象
+    cxt.fillStyle = '#56F241'; //设置或返回用于填充绘画的颜色、渐变或模式 染成红色
+    cxt.strokeStyle = '#56F241'; //设置或返回用于笔触的颜色、渐变或模式
+    //cxt.lineCap = 'square'; //设置或返回线条的结束端点样式
+    cxt.beginPath(); //起始一条路径，或重置当前路径
+    cxt.moveTo(32, 32); //把路径移动到画布中的指定点，不创建线条
+
+    function draw(current) {
+        //cxt.lineTo(100,0); //添加一个新点，然后在画布中创建从该点到最后指定点的线条
+        cxt.arc(32, 32, 20, -0.5 * Math.PI, current * (2 * Math.PI) - Math.PI / 2, false); //绘制一个中心点为（100,100），半径为100，起始点为1.5*Math.PI,终点为2*Math.PI,顺时针的1/4圆
+        cxt.closePath(); //创建从当前点回到起始点的路径
+        cxt.fill(); //填充当前绘图（路径）
+        //cxt.lineWidth = 10.0; //设置或返回当前的线条宽度
+        cxt.stroke(); //绘制已定义的路径
+    }
+    //draw(0.6);
+    var t = 0;
+    var timer = null;
+    function loadCanvas(now) {
+        timer = setInterval(function() {
+            if (t > now) {
+                draw(now); //最后一次绘制
+                clearInterval(timer);
+            } else {
+                draw(t);
+                t += 0.005;
+            }
+        }, 5);
+    }
+    loadCanvas(0.8);
+    timer = null;
+</script>

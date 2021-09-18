@@ -45,17 +45,7 @@
             </el-descriptions-item>
           </el-descriptions>
         </el-card>
-
-        <el-card style="width: 700px" class="showBox" shadow="hover">
-          <h2 class="costPrice">当前成本：{{ costPrice }}</h2>
-          <h2 class="currentPrice">当前股价：{{ currentPrice }}</h2>
-          <h2 class="availableDiff">
-            最大回撤比率：{{
-              availableDiff === "" ? "无记录" : availableDiff + "%"
-            }}
-          </h2>
-        </el-card>
-
+        <RealtimePriceMonitor :costPrice="costPrice" :currentPrice="currentPrice" :availableDiff="availableDiff" />
         <el-card style="width: 700px" class="operationBox" shadow="hover">
           <div class="inputBox costPrice">
             <p>请输入<b>成本</b>价格：</p>
@@ -96,7 +86,7 @@
               >计算止损价格</el-button
             >
             <el-divider direction="vertical"></el-divider>
-            {{accumulatePrice}}
+            {{ accumulatePrice }}
             <el-button
               class="realTimePriceCalc"
               type="primary"
@@ -114,17 +104,17 @@
           </div>
         </el-card>
       </el-space>
-      <Case />
     </div>
   </div>
 </template>
 
 <script>
-import getPosAndNegNum from '/@/utils/mathUtils';
+import getPosAndNegNum from "/@/utils/mathUtils";
+import RealtimePriceMonitor from "/@/components/RealtimePriceMonitor.vue";
 export default {
   name: "MinProfitCalc",
-  components:{
-    // Case
+  components: {
+    RealtimePriceMonitor,
   },
   data() {
     return {
@@ -135,7 +125,7 @@ export default {
       minFloatProfit: 0, //最小浮动利润
       sellOutPrice: 0, //止损价格
       result: "", //结果
-      accumulatePrice: 17.90,
+      accumulatePrice: 17.9,
     };
   },
   methods: {
@@ -151,7 +141,7 @@ export default {
     },
     stopBtn() {},
     sellPrice(costPrice, availableDiff = 0.3, currentPrice) {
-      this.tempProfit = currentPrice - costPrice;
+      this.tempProfit = (currentPrice - costPrice).toFixed(2);
       this.minFloatProfit = this.tempProfit * (1 - availableDiff / 100);
       this.sellOutPrice =
         currentPrice - (this.tempProfit * availableDiff) / 100;
@@ -159,9 +149,9 @@ export default {
 
     priceChange(timeSlot) {
       // this.currentPrice += getPosAndNegNum(10)
-      this.accumulatePrice = getPosAndNegNum(this.accumulatePrice)
-      // console.log(getPosAndNegNum(currentPrice)); 
-      return
+      this.accumulatePrice = getPosAndNegNum(this.accumulatePrice);
+      // console.log(getPosAndNegNum(currentPrice));
+      return;
       let timer = null;
       setInterval(() => {
         // this.currentPrice = currentPrice += Math.random() > 0.5 ?;
